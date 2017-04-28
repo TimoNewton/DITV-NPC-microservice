@@ -1,0 +1,150 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Dogs in the Vineyard Non-Player Character API
+  description: >-
+    API used to manage Non-Player Characters (NPCs) in a game of Dogs in the
+    Vineyard (DitV)
+  contact:
+    name: Timo Newton
+    email: motipha@gmail.com
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  '/{game}/batches':
+    get:
+      tags:
+        - NPC Batches
+      description: >-
+        Retrieve collections of NPC's and Proto-NPC's associated with a specific
+        game
+      operationId: getBatches
+      produces:
+        - json
+      parameters:
+        - name: game
+          in: path
+          description: unique identifier of the game
+          required: true
+          type: long
+        - name: state
+          in: query
+          description: 'state of the batch: Active, Unpopulated, Exhausted'
+          required: false
+          type: string
+      responses:
+        '200':
+          description: list of all batches of NPC's created in this game
+        default:
+          description: unexpected error
+  '/{game}/batch':
+    post:
+      tags:
+        - NPC Batches
+      description: Creates a new batch of NPC's
+      operationId: createBatch
+      produces:
+        - json
+      parameters:
+        - name: game
+          in: path
+          description: unique identifier of the game
+          required: true
+          type: long
+      responses:
+        '200':
+          description: 'The newly created, currently active batch of NPC''s'
+        default:
+          description: unexpected error
+  '/batch/{batch}':
+    get:
+      tags:
+        - NPC Batches
+      description: Retrieve a batch of NPC's
+      operationId: getBatch
+      produces:
+        - json
+      parameters:
+        - name: batch
+          in: path
+          description: unique identifier of the batch
+          required: true
+          type: long
+      responses:
+        '200':
+          description: Requested batch of NPC's
+        default:
+          description: unexpected error
+    put:
+      tags:
+        - NPC Batches
+      description: update a batch of NPC's
+      operationId: updateBatch
+      produces:
+        - json
+      parameters:
+        - name: batch
+          in: path
+          description: unique identifier of the batch
+          required: true
+          type: long
+      responses:
+        '200':
+          description: The NPC Batch
+        default:
+          description: unexpected error
+  '/{game}/npcs':
+    get:
+      tags:
+        - NPCs
+      description: retrieves all defined NPC's for this game
+      operationId: getNPCs
+      produces:
+        - json
+      parameters:
+        - name: game
+          in: path
+          description: Unique identifier of the game
+          required: true
+          type: long
+      responses:
+        '200':
+          description: weather response
+        default:
+          description: unexpected error
+  '/npc/{npc}':
+    get:
+      tags:
+        - NPCs
+      description: retrieves a NPC for this game
+      operationId: getNPC
+      produces:
+        - json
+      parameters:
+        - name: npc
+          in: path
+          description: Unique identifier of the npc
+          required: true
+          type: long
+      responses:
+        '200':
+          description: NPC
+        default:
+          description: unexpected error
+    put:
+      tags:
+        - NPCs
+      description: updates a NPC for this game
+      operationId: updateNPC
+      produces:
+        - json
+      parameters:
+        - name: npc
+          in: path
+          description: Unique identifier of the npc
+          required: true
+          type: long
