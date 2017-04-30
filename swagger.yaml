@@ -30,15 +30,21 @@ paths:
           in: path
           description: unique identifier of the game
           required: true
-          type: long
+          type: number
         - name: state
           in: query
-          description: 'state of the batch: Active, Unpopulated, Exhausted'
+          description: 'State of the batch: Active, Unpopulated, Exhausted'
           required: false
           type: string
       responses:
         '200':
           description: list of all batches of NPC's created in this game
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/batch'
+        '404':
+          description: Unable to find the specified game
         default:
           description: unexpected error
   '/{game}/batch':
@@ -54,13 +60,19 @@ paths:
           in: path
           description: unique identifier of the game
           required: true
-          type: long
+          type: number
       responses:
-        '200':
-          description: 'The newly created, currently active batch of NPC''s'
+        '201':
+          description: NPC Batch has been successfully created
         default:
           description: unexpected error
   '/batch/{batch}':
+    parameters:
+      - name: batch
+        in: path
+        description: unique identifier of the batch
+        required: true
+        type: number
     get:
       tags:
         - NPC Batches
@@ -68,12 +80,6 @@ paths:
       operationId: getBatch
       produces:
         - json
-      parameters:
-        - name: batch
-          in: path
-          description: unique identifier of the batch
-          required: true
-          type: long
       responses:
         '200':
           description: Requested batch of NPC's
@@ -86,15 +92,11 @@ paths:
       operationId: updateBatch
       produces:
         - json
-      parameters:
-        - name: batch
-          in: path
-          description: unique identifier of the batch
-          required: true
-          type: long
       responses:
         '200':
           description: The NPC Batch
+          schema:
+            $ref: '#/definitions/batch'
         default:
           description: unexpected error
   '/{game}/npcs':
@@ -110,13 +112,23 @@ paths:
           in: path
           description: Unique identifier of the game
           required: true
-          type: long
+          type: number
       responses:
         '200':
-          description: weather response
+          description: all NPC's in the specified game
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/npc'
         default:
           description: unexpected error
   '/npc/{npc}':
+    parameters:
+      - name: npc
+        in: path
+        description: Unique identifier of the npc
+        required: true
+        type: number
     get:
       tags:
         - NPCs
@@ -124,15 +136,11 @@ paths:
       operationId: getNPC
       produces:
         - json
-      parameters:
-        - name: npc
-          in: path
-          description: Unique identifier of the npc
-          required: true
-          type: long
       responses:
         '200':
           description: NPC
+          schema:
+            $ref: '#/definitions/npc'
         default:
           description: unexpected error
     put:
@@ -142,9 +150,60 @@ paths:
       operationId: updateNPC
       produces:
         - json
-      parameters:
-        - name: npc
-          in: path
-          description: Unique identifier of the npc
-          required: true
-          type: long
+      responses:
+        '200':
+          description: NPC
+          schema:
+            $ref: '#/definitions/npc'
+        default:
+          description: unexpected error
+definitions:
+  batch:
+    type: array
+    items:
+      $ref: '#/definitions/npc'
+  npc:
+    properties:
+      name:
+        type: string
+      stats:
+        type: array
+        items:
+          $ref: '#/definitions/stat'
+      traits:
+        type: array
+        items:
+          $ref: '#/definitions/trait'
+      relationships:
+        type: array
+        items:
+          $ref: '#/definitions/trait'
+  diePool:
+    required:
+      - size
+      - number
+    properties:
+      size:
+        type: integer
+      number:
+        type: integer
+  stat:
+    required:
+      - name
+      - dice
+    properties:
+      name:
+        type: string
+      dice:
+        $ref: '#/definitions/diePool'
+  trait:
+    required:
+      - wording
+      - dice
+    properties:
+      wording:
+        type: string
+      dice:
+        type: array
+        items:
+          $ref: '#/definitions/diePool'
