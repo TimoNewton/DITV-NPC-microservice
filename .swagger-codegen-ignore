@@ -21,8 +21,8 @@
 #docs/*.md
 # Then explicitly reverse the ignore rule for a single file:
 #!docs/README.md
-build.sbt
 pom.xml
+build.sbt
 git_push.sh
-AndroidManifest.xml
 build.gradle
+README.md

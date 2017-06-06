@@ -10,8 +10,6 @@ info:
     email: motipha@gmail.com
 schemes:
   - https
-consumes:
-  - application/json
 produces:
   - application/json
 paths:
@@ -23,8 +21,6 @@ paths:
         Retrieve collections of NPC's and Proto-NPC's associated with a specific
         game
       operationId: getBatches
-      produces:
-        - json
       parameters:
         - name: game
           in: path
@@ -53,8 +49,6 @@ paths:
         - NPC Batches
       description: Creates a new batch of NPC's
       operationId: createBatch
-      produces:
-        - json
       parameters:
         - name: game
           in: path
@@ -64,6 +58,8 @@ paths:
       responses:
         '201':
           description: NPC Batch has been successfully created
+          schema:
+            $ref: '#/definitions/batch'
         default:
           description: unexpected error
   '/batch/{batch}':
@@ -78,11 +74,11 @@ paths:
         - NPC Batches
       description: Retrieve a batch of NPC's
       operationId: getBatch
-      produces:
-        - json
       responses:
         '200':
           description: Requested batch of NPC's
+          schema:
+            $ref: '#/definitions/batch'
         default:
           description: unexpected error
     put:
@@ -90,8 +86,15 @@ paths:
         - NPC Batches
       description: update a batch of NPC's
       operationId: updateBatch
-      produces:
-        - json
+      consumes:
+        - application/json
+      parameters:
+        - name: batch_payload
+          in: body
+          description: The NPC batch payload
+          required: true
+          schema:
+            $ref: '#/definitions/batch'
       responses:
         '200':
           description: The NPC Batch
@@ -105,8 +108,6 @@ paths:
         - NPCs
       description: retrieves all defined NPC's for this game
       operationId: getNPCs
-      produces:
-        - json
       parameters:
         - name: game
           in: path
@@ -134,8 +135,6 @@ paths:
         - NPCs
       description: retrieves a NPC for this game
       operationId: getNPC
-      produces:
-        - json
       responses:
         '200':
           description: NPC
@@ -148,8 +147,6 @@ paths:
         - NPCs
       description: updates a NPC for this game
       operationId: updateNPC
-      produces:
-        - json
       responses:
         '200':
           description: NPC
@@ -166,6 +163,12 @@ definitions:
     properties:
       name:
         type: string
+      status:
+        type: string
+        enum:
+          - proto
+          - alive
+          - dead
       stats:
         type: array
         items:
