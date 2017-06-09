@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'docker'
-
+apply plugin: "org.hidetake.swagger.generator"
 
 group = 'org.prankersize'
 version = '1.0.0'
@@ -11,10 +11,14 @@ version = '1.0.0'
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
         classpath('se.transmode.gradle:gradle-docker:1.2')
+        classpath "gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.4.2"
     }
 }
 
@@ -26,14 +30,9 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 
-task execute(type:JavaExec) {
-  main = System.getProperty('mainClass')
-  classpath = sourceSets.main.runtimeClasspath
-}
-
 task buildDocker(type: Docker, dependsOn: build) {
   push = false
-  applicationName = "ditvNpcs"
+  applicationName = "ditv-npcs"
   dockerfile = file('src/main/docker/Dockerfile')
   doFirst {
     copy {
@@ -43,19 +42,27 @@ task buildDocker(type: Docker, dependsOn: build) {
   }
 }
 
+validateSwagger{
+    inputFile = file('src/main/resources/swagger.yaml')
+}
+
+generateSwaggerCode{
+    language = "spring"
+    inputFile = file("src/main/resources/swagger.yaml")
+    configFile = file("src/main/resources/swagger_codegen_options.json")
+    components = ['models','apis']
+}
+
 jar {
     baseName = 'ditv-npc-micro-service'
     version =  '0.1.0'
 }
 
-ext {
-    swagger_annotations_version = "1.5.9"
-    junit_version = "4.12"
-}
-
 dependencies {
-    compile "io.swagger:swagger-annotations:$swagger_annotations_version"
-    testCompile "junit:junit:$junit_version"
-    compile("org.springframework.boot:spring-boot-starter-web")
     testCompile("org.springframework.boot:spring-boot-starter-test")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    swaggerCodegen 'io.swagger:swagger-codegen-cli:2.2.2'
+    compile 'io.swagger:swagger-annotations:1.5.8'
+    compile "io.springfox:springfox-swagger2:2.7.0"
+    compile "io.springfox:springfox-swagger-ui:2.7.0"
 }

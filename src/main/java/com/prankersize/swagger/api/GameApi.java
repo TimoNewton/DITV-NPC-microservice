@@ -1,8 +1,8 @@
-package io.swagger.api;
+package com.prankersize.swagger.api;
 
-import io.swagger.model.Batch;
+import com.prankersize.swagger.model.Batch;
 import java.math.BigDecimal;
-import io.swagger.model.Npc;
+import com.prankersize.swagger.model.Npc;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import javax.validation.constraints.*;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-06-05T22:34:58.793-05:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-06-09T14:57:59.332-05:00")
 
 @Api(value = "{game}", description = "the {game} API")
 public interface GameApi {
@@ -29,7 +29,7 @@ public interface GameApi {
     @RequestMapping(value = "/{game}/batch",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<Batch> createBatch(@ApiParam(value = "unique identifier of the game",required=true ) @PathVariable("game") BigDecimal game);
+    ResponseEntity<Batch> createBatch(@ApiParam(value = "unique identifier of the game", required = true) @PathVariable("game") BigDecimal game);
 
 
     @ApiOperation(value = "", notes = "Retrieve collections of NPC's and Proto-NPC's associated with a specific game", response = Batch.class, responseContainer = "List", tags={ "NPC Batches", })
@@ -40,8 +40,8 @@ public interface GameApi {
     @RequestMapping(value = "/{game}/batches",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Batch>> getBatches(@ApiParam(value = "unique identifier of the game",required=true ) @PathVariable("game") BigDecimal game,
-         @ApiParam(value = "State of the batch: Active, Unpopulated, Exhausted") @RequestParam(value = "state", required = false) String state);
+    ResponseEntity<List<Batch>> getBatches(@ApiParam(value = "unique identifier of the game", required = true) @PathVariable("game") BigDecimal game,
+                                           @ApiParam(value = "State of the batch: Active, Unpopulated, Exhausted") @RequestParam(value = "state", required = false) String state);
 
 
     @ApiOperation(value = "", notes = "retrieves all defined NPC's for this game", response = Npc.class, responseContainer = "List", tags={ "NPCs", })
@@ -51,6 +51,6 @@ public interface GameApi {
     @RequestMapping(value = "/{game}/npcs",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Npc>> getNPCs(@ApiParam(value = "Unique identifier of the game",required=true ) @PathVariable("game") BigDecimal game);
+    ResponseEntity<List<Npc>> getNPCs(@ApiParam(value = "Unique identifier of the game", required = true) @PathVariable("game") BigDecimal game);
 
 }

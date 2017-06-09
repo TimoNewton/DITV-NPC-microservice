@@ -1,7 +1,7 @@
-package io.swagger.api;
+package com.prankersize.swagger.api;
 
 import java.math.BigDecimal;
-import io.swagger.model.Npc;
+import com.prankersize.swagger.model.Npc;
 
 import io.swagger.annotations.*;
 
@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 import javax.validation.constraints.*;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-06-05T22:34:58.793-05:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-06-09T14:57:59.332-05:00")
 
 @Controller
 public class NpcApiController implements NpcApi {
@@ -26,8 +26,9 @@ public class NpcApiController implements NpcApi {
 
 
     public ResponseEntity<Npc> getNPC(@ApiParam(value = "Unique identifier of the npc",required=true ) @PathVariable("npc") BigDecimal npc) {
-        // do some magic!
-        return new ResponseEntity<Npc>(HttpStatus.OK);
+        Npc returnObj = new Npc();
+        returnObj.setName("Hinkleberry Flatterjam");
+        return new ResponseEntity<Npc>(returnObj,HttpStatus.OK);
     }
 
     public ResponseEntity<Npc> updateNPC(@ApiParam(value = "Unique identifier of the npc",required=true ) @PathVariable("npc") BigDecimal npc) {
