@@ -46,12 +46,12 @@ validateSwagger{
     inputFile = file('src/main/resources/swagger.yaml')
 }
 
-//generateSwagger{
-//    language = "spring"
-//    inputFile = file("./src/main/resources/swagger.yaml")
-//    configFile = file("./src/main/resources/swagger_codegen_options.json")
-//    components['models','apis']
-//}
+generateSwaggerCode{
+    language = "spring"
+    inputFile = file("src/main/resources/swagger.yaml")
+    configFile = file("src/main/resources/swagger_codegen_options.json")
+    components = ['models','apis']
+}
 
 jar {
     baseName = 'ditv-npc-micro-service'
@@ -61,5 +61,8 @@ jar {
 dependencies {
     testCompile("org.springframework.boot:spring-boot-starter-test")
     compile("org.springframework.boot:spring-boot-starter-web")
-    compile('io.swagger:swagger-codegen-cli:2.2.1')
+    swaggerCodegen 'io.swagger:swagger-codegen-cli:2.2.2'
+    compile 'io.swagger:swagger-annotations:1.5.8'
+    compile "io.springfox:springfox-swagger2:2.7.0"
+    compile "io.springfox:springfox-swagger-ui:2.7.0"
 }
